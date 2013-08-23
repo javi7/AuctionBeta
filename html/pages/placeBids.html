@@ -1,0 +1,7 @@
+$def with (playersList)
+
+$:utils.template.render('html/components', globals={'utils': utils}).commonHeader(['auction-bids.js'], ['placebids.css'], "formatBidsTable()")
+
+$:utils.template.render('html/components', globals={'utils': utils}).bidsTable(playersList)
+
+$:utils.template.render('html/components').commonFooter()

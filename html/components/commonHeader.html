@@ -1,0 +1,59 @@
+$def with (jsfiles, cssfiles, onload)
+
+$def addOnloadHandler():
+    $if onload:
+        onload=$onload style=display:none
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            New League Order
+        </title>
+        <link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="/static/css/common.css" rel="stylesheet">
+        $for cssfile in cssfiles:
+            <link href="/static/css/$cssfile" rel="stylesheet">
+        <script src="/static/js/mootools-core-1.4.5.js"></script>
+        <script src="/static/js/mootools-more-1.4.0.1.js"></script>
+        <script src="/static/js/common.js"></script>
+        $for jsfile in jsfiles:
+            <script src="/static/js/$jsfile"></script>
+    </head>
+<body $(addOnloadHandler())>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <div class="row">
+                    <ul class="nav">
+                        <li><a href="/">home</a></li>
+                        $if 'loggedin' in utils.session and utils.session.loggedin == True:
+                            <li><a href="/team">team</a></li>
+                            <li><a href="/bid">bid</a></li>
+                        <li><a>standings</a></li>
+                        <li><a>schedule</a></li>
+                        <li><a href="/rules">rules</a></li>
+                    </ul>
+                $if 'loggedin' not in utils.session or utils.session.loggedin == False:
+                    <form class="navbar-form pull-right">
+                        <input type="text" name="username" placeholder="team name" class="input-small"/>
+                        <input type="password" name="password" placeholder="password" class="input-small"/>
+                        <button type="button" class="btn" onclick="login()">
+                            login
+                        </button>
+                    </form>
+                $else:
+                    <div class="pull-right">
+                        <ul class="nav">
+                            <li><a href="/reset">Sign Out</a></li>
+                            <li><a href="">My Account</a></li>
+                        </ul>
+                    </div>
+                    <div class="pull-right" id="welcome-message">
+                        Welcome to <a href="http://www.zombo.com" target="blank">Zombocom</a>, $(utils.session.username)!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+

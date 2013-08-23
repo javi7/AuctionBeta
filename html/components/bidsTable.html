@@ -1,0 +1,54 @@
+$def with (playersList)
+
+$def addOwner(p):
+    $if 'owner_id' in p.keys() and p['owner_id']:
+        ownerId=$(p['owner_id']) ownerName=$(p['owner_name']) winningBid=$(p['winning_bid'])
+
+<table class="table">
+    <thead>
+    </thead>
+    <tbody>
+    $for player in playersList:
+        <tr>
+            <td>
+                $player['player_name']
+            </td>
+            <td>
+            $if player['player_nfl_team']:
+                $player['player_nfl_team']
+            $else:
+                FA
+            </td>
+            <td>
+                $player['player_position']
+            </td>
+            $if player['bid_amount'] != None:
+                $ bid = player['bid_amount']
+            $else:
+                $ bid = 0
+            <td class="bidFormCell" playerId="$player['player_id']" bidAmount="$bid" $(addOwner(player))>
+                <form class="form-horizontal">
+                    <div class="control-group">
+                        $ bid = player['bid_amount']
+                        <input class="bidinput input-mini" type="number" min="1" />
+                        <div class="bidbuttongroup editbiddiv">
+                            <button type="button" class="btn btn-info" onclick="editBid()">
+                                Edit Bid
+                            </button>
+                            <button type="button" class="btn btn-danger" onclick="cancelBid()">
+                                Cancel Bid
+                            </button>
+                        </div>
+                        <div class="bidbuttongroup placebiddiv">
+                            <button type="button" class="btn btn-primary" onclick="placeBid()">
+                                Place Bid
+                            </button>
+                        </div>
+                        <div class="bidbuttongroup playerowneddiv">
+                        </div>
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </tbody>
+</table>

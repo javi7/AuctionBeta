@@ -1,0 +1,34 @@
+$def with()
+
+$:utils.template.render('html/components', globals={'utils': utils}).commonHeader([], [], None)
+
+<div class="container">
+	<div class="row">
+		<div class="span6">
+			<h3>what is wkal?</h3>
+			<ul>
+				<li>weekly</li>
+				<li>keeper</li>
+				<li>auction</li>
+				<li>league</li>
+			</ul>
+		</div>
+		<div class="span6">
+			<h3>who is wkal?</h3>
+			<p>it's not a person, dude.</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span6">
+			<h3>but why wkal?</h3>
+			<p>trading is fun, but 2 many owners are 2 uptight. instead of trading, let's just reset rosters every week</p>
+			<p>...also keepers are fun, so why wait until the end of the year?</p>
+		</div>
+		<div class="span6">
+			<h3>i am confused</h3>
+			<p>click on the rules button up at the top. u no internet?</p>
+		</div>
+	</div>
+</div>
+
+$:utils.template.render('html/components').commonFooter()

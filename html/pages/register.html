@@ -1,0 +1,46 @@
+$def with()
+
+$:utils.template.render('html/components', globals={'utils': utils}).commonHeader(['register.js'], [], None)
+
+<div class="container">
+	<div class="row">
+		<div class="span6">
+			<form class="form-horizontal" onsubmit="register()">
+				<div class="control-group">
+					<label class="control-label">email</label>
+					<div class="controls">
+						<input type="text" name="email"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">team name</label>
+					<div class="controls">
+						<input type="text" name="user"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">password</label>
+					<div class="controls">
+						<input type="password" name="pw1"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">confirm password</label>
+					<div class="controls">
+						<input type="password" name="pw2"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="controls">
+						<button type="submit" class="btn" onclick="register()">register</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="span6">
+			<h3><--- register or login ^^^</h3>
+			<h2>welcome to the top-secret, experimental wkal!</h2>
+		</div>
+</div>
+
+$:utils.template.render('html/components').commonFooter()

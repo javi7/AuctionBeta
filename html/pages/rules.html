@@ -1,0 +1,50 @@
+$def with()
+
+$:utils.template.render('html/components', globals={'utils': utils}).commonHeader(['register.js'], [], None)
+
+<div class="container">
+	<div class="row">
+		<div class="span6">
+			<h3>roster</h3>
+			<ul>
+				<li>one thrower</li>
+				<li>two runners</li>
+				<li>two catchers</li>
+				<li>no kickers</li>
+				<li>no defense</li>
+				<li>no bench</li>
+				<li>head coaches? fuck you</li>
+			</ul>
+		</div>
+		<div class="span6">
+			<h3>auction</h3>
+			<ul>
+				<li>one hundred dollar budget each week</li>
+				<li>bids are processed each thurs at 2 am</li>
+				<li>highest bids are always processed first</li>
+				<li>remaining players may be added for one dollar</li>
+				<li>acquired players may not be dropped</li>
+			</ul>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span6">
+			<h3>keepers</h3>
+			<ul>
+				<li>up to two players may be kept each week</li>
+				<li>purchase price of keepers subtracted from weekly budget</li>
+				<li>players may be kept as many weeks as desired</li>
+			</ul>
+		</div>
+		<div class="span6">
+			<h3>schedule</h3>
+			<ul>
+				<li>two divisions of four teams each</li>
+				<li>four games against divisional friends</li>
+				<li>one game against interdivisional foes</li>
+				<li>division champions play for title in week 17</li>
+		</div>
+	</div>
+</div>
+
+$:utils.template.render('html/components').commonFooter()

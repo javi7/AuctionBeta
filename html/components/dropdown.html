@@ -1,0 +1,8 @@
+$def with (options, currOption)
+
+$def selectOption(option):
+	$if option==currOption:
+		selected=selected
+
+$for option in options:
+				<option value="$(option)" $(selectOption(option))>$(option)</option>
