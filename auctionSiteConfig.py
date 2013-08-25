@@ -15,7 +15,9 @@ urls = (
 	'/ajax/register', 'ajaxHandlers.Register',
 	'/rules', 'urlHandlers.Rules',
 	'/account', 'urlHandlers.Account',
-	'/ajax/changeaccount', 'ajaxHandlers.ChangeAccount'
+	'/ajax/changeaccount', 'ajaxHandlers.ChangeAccount',
+	'/schedule', 'urlHandlers.Schedule',
+	'/standings', 'urlHandlers.Standings'
 )
 
 app = web.application(urls, globals())

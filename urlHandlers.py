@@ -75,3 +75,13 @@ class Team:
 		bidList = auctionDb.getUserBids(userId, filters.week)
 		filters.userId = userId
 		return str(getTemplateSystem(session, filters).team(rosterList, bidList))
+
+class Standings:
+	def GET(self):
+		session = web.config._session
+		return str(getTemplateSystem(session).comingSoon())
+
+class Schedule:
+	def GET(self):
+		session = web.config._session
+		return str(getTemplateSystem(session).comingSoon())	
