@@ -4,6 +4,10 @@ import json
 
 import auctionDb
 
+approvedEmailList = ['javi.muhrer@gmail.com', 'salaam.ender@gmail.com', 'stjsh09@moravian.edu',
+			'lind@susqu.edu', 'fjlind8@gmail.com', 'sgr50667@huskies.bloomu.edu',
+			'mc735869@wcupa.edu', 'krineran@gmail.com', 'kevin.w.binder@gmail.com']
+
 class Login:
 	def POST(self):
 		session = web.config._session
@@ -37,7 +41,7 @@ class Register:
 		password = data['password'][0]
 		email = data['email'][0]
 		result = {}
-		if email in ['javi.muhrer@gmail.com']:
+		if email in approvedEmailList:
 			auctionDb.register(username, password, email)
 			result['success'] = True
 		else:
