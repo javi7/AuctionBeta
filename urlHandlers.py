@@ -31,6 +31,11 @@ class Home:
 		else:
 			return str(getTemplateSystem(session).register())
 
+class Account:
+	def GET(self):
+		session = web.config._session
+		if 'userid' in session and session.userid != None:
+			return str(getTemplateSystem(session).account())
 
 class Bid:
 	def GET(self):

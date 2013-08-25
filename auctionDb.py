@@ -5,7 +5,7 @@ from datetime import datetime
 INSERT_NEW_USER = 'INSERT INTO t_site_users (user_alias, user_password, user_email)' +\
 					' VALUES($username, $password, $email)'
 
-SELECT_USER_FROM_ALIAS = 'SELECT * FROM t_site_users WHERE user_alias=$username'
+SELECT_USER_FROM_ALIAS_OR_EMAIL = 'SELECT * FROM t_site_users WHERE user_alias=$username OR user_email=$username'
 
 SELECT_USER_FROM_ID = 'SELECT * FROM t_site_users WHERE user_id=$userId'
 
@@ -86,6 +86,12 @@ SELECT_NUM_KEEPERS = 'SELECT COUNT(*) AS count FROM t_lineup_players lp JOIN t_l
 						'lp.lineup_id=l.lineup_id AND l.user_id=$userId AND l.week_id=$weekId ' +\
 						'WHERE lp.lineup_player_keep=1'
 
+UPDATE_CHANGE_PASSWORD = 'UPDATE t_site_users SET user_password=$password WHERE user_id=$userId'
+
+UPDATE_CHANGE_TEAM_NAME = 'UPDATE t_site_users SET user_alias=$teamName WHERE user_id=$userId'
+
+UPDATE_CHANGE_EMAIL = 'UPDATE t_site_users SET user_email=$email WHERE user_id=$userId'
+
 def query(queryString, queryParams):
 	dbase = db.database(dbn='mysql', db='AuctionBeta', user='root')
 	return dbase.query(queryString, vars=queryParams)
@@ -98,22 +104,29 @@ def register(username, password, email):
 	return True
 
 def login(username, password):
-	userResult = query(SELECT_USER_FROM_ALIAS, {'username': username})
+	userResult = query(SELECT_USER_FROM_ALIAS_OR_EMAIL, {'username': username})
 	if len(userResult) == 1:
 		user = userResult[0]
 		dbPassword = user['user_password']
 		if sha256_crypt.verify(password, dbPassword):
-			return user['user_id']
+			return user
 		else:
-			return -1
+			return None
 	else:
-		return -1
+		return None
+
+def verifyPassword(userId, password):
+	user = getUser(userId = userId)
+	if sha256_crypt.verify(password, user['user_password']):
+		return True
+	else:
+		return False
 
 def getUser(username=None, userId=None):
 	if username == None:
 		userResult = query(SELECT_USER_FROM_ID, {'userId': userId})
 	else:
-		userResult = query(SELECT_USER_FROM_ALIAS, {'username': username})
+		userResult = query(SELECT_USER_FROM_ALIAS_OR_EMAIL, {'username': username})
 	return userResult[0]
 
 def getAllTeamNames():
@@ -218,3 +231,19 @@ def getAllWeeks():
 	for week in weekResult:
 		weekList.append(week['week_id'])
 	return weekList
+
+def changePassword(userId, password):
+	password = sha256_crypt.encrypt(password)
+	query(UPDATE_CHANGE_PASSWORD, {
+		'userId': userId, 'password': password
+	})
+
+def changeEmail(userId, email):
+	query(UPDATE_CHANGE_EMAIL, {
+		'userId': userId, 'email': email
+	})
+
+def changeTeamName(userId, teamName):
+	query(UPDATE_CHANGE_TEAM_NAME, {
+		'userId': userId, 'teamName': teamName
+	})

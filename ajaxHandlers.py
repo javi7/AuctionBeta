@@ -11,12 +11,12 @@ class Login:
 		print 'POST MADE to /ajax/login'
 		username = data['username'][0]
 		password = data['password'][0]
-		userid = auctionDb.login(username, password)
+		user = auctionDb.login(username, password)
 		result = {}
-		if userid != -1:
+		if user != None:
 			session.loggedin = True
-			session.username = username
-			session.userid = userid
+			session.username = user['user_alias']
+			session.userid = user['user_id']
 			result['success'] = True
 		else:
 			session.loggedin = False
@@ -24,10 +24,12 @@ class Login:
 		return json.dumps(result)
 
 class Reset:
-	def GET(self):
+	def POST(self):
 		session = web.config._session
 		session.kill()
-		return 'the wolf dead'
+		result = {}
+		result['success'] = True
+		return json.dumps(result)
 
 class Register:
 	def POST(self):
@@ -42,4 +44,35 @@ class Register:
 			result['success'] = True
 		else:
 			result['success'] = False
+		return json.dumps(result)
+
+class ChangeAccount:
+	def POST(self):
+		session = web.config._session
+		result = {}
+		if 'userid' in session and session.userid != None:
+			userId = session.userid
+			data = urlparse.parse_qs(web.data())
+			password = data['password'][0]
+			changeValue = data['changeValue'][0]
+			field = data['field'][0]
+			if auctionDb.verifyPassword(userId, password):
+				if field ==  'newpassword':
+					auctionDb.changePassword(userId, changeValue)
+					result['success'] = True
+				elif field == 'teamname':
+					auctionDb.changeTeamName(userId, changeValue)
+					result['success'] = True
+				elif field == 'email':
+					auctionDb.changeEmail(userId, changeValue)
+					result['success'] = True
+				else:
+					result['success'] = False
+					result['failure'] = 'invalid field to change!'
+			else:
+				result['success'] = False
+				result['failure'] = 'invalid password!'
+		else:
+			result['success'] = False
+			result['failure'] = 'not logged in!'
 		return json.dumps(result)
