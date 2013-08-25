@@ -1,0 +1,86 @@
+$def with()
+
+$:utils.template.render('html/components', globals={'utils': utils}).commonHeader(['account.js'], [], None)
+
+<div class="container">
+	<div class="row">
+		<div class="span4">
+			<h3>change team name</h3>
+		</div>
+		<div class="span8">
+			<form name="teamname" class="form-horizontal">
+				<div class="control-group">
+					<label class="control-label">new name</label>
+					<div class="controls">
+						<input type="text" name="teamname" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">password</label>
+					<div class="controls">
+						<input type="password" name="password" />
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="controls">
+						<button type="submit" class="btn" onclick="changeAccount()">submit</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span4">
+			<h3>change password</h3>
+		</div>
+		<div class="span8">
+			<form name="newpassword" class="form-horizontal">
+				<div class="control-group">
+					<label class="control-label">new password</label>
+					<div class="controls">
+						<input type="password" name="newpassword" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">old password</label>
+					<div class="controls">
+						<input type="password" name="password" />
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="controls">
+						<button type="submit" class="btn" onclick="changeAccount()">submit</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="span4">
+			<h3>change email</h3>
+		</div>
+		<div class="span8">
+			<form name="email" class="form-horizontal">
+				<div class="control-group">
+					<label class="control-label">new email</label>
+					<div class="controls">
+						<input type="text" name="email" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">password</label>
+					<div class="controls">
+						<input type="password" name="password" />
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="controls">
+						<button type="submit" class="btn" onclick="changeAccount()">submit</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+$:utils.template.render('html/components', globals={'utils': utils}).commonFooter()

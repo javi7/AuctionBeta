@@ -2,45 +2,59 @@ $def with (rosterList, bidsList)
 
 $:utils.template.render('html/components', globals={'utils': utils}).commonHeader(['bidTable.js', 'team.js', 'filter.js'], ['bidTable.css', 'team.css'], "formatBidsTable()")
 
-<div class="container-fluid">
-	<div class="well well-small">
-		<form class="form-inline" onsubmit="filter()">
-			Week
-			<select name="week" onchange="filter()">
-				$:utils.template.render('html/components', globals={'utils': utils}).dropdown(utils.weeks, utils.filters.week)
-			</select>
-			Team
-			<select name="team" onchange="filter()">
-				$:utils.template.render('html/components', globals={'utils': utils}).dropdown(utils.users, utils.filters.team)
-			</select>
-		</form>
+<div class="container">
+	<div class="row">
+		<div class="well well-small">
+			<form class="form-inline" onsubmit="filter()">
+				Week
+				<select name="week" onchange="filter()">
+					$:utils.template.render('html/components', globals={'utils': utils}).dropdown(utils.weeks, utils.filters.week)
+				</select>
+				Team
+				<select name="team" onchange="filter()">
+					$:utils.template.render('html/components', globals={'utils': utils}).dropdown(utils.users, utils.filters.team)
+				</select>
+			</form>
+		</div>
 	</div>
-	<h2>Roster</h2>
-	<table class="table">
-		<thead>
-		</thead>
-		<tbody>
-			$for position in ['QB', 'RB', 'WR']:
-				<tr><th colspan="4">$position</th></tr>
-				$for player in rosterList:
-					$if player['player_position'] == position:
-						<tr>
-							<td>$player['player_name']</td>
-							<td>$player['player_nfl_team']</td>
-							<td>$$$player['bid_amount']</td>
-							<td class="keepButtonCell" playerId="$player['player_id']">
-								$if player['lineup_player_keep'] == '1':
-									<button class="btn btn-danger btn-keep" onclick="changeKeep()">Unkeep</button>
-								$else:
-									<button class="btn btn-primary btn-keep" onclick="changeKeep()">Keep</button>
-							</td>
-						</tr>
-		</tbody>
-	</table>
+	<div class="row">
+		<div class="span2">
+			<h3>roster</h3>
+		</div>
+		<div class="span10">
+			<table class="table">
+				<thead>
+				</thead>
+				<tbody>
+					$for position in [['QB','thrower'], ['RB','runners'], ['WR','catchers']]:
+						<tr><th colspan="4">$position[1]</th></tr>
+						$for player in rosterList:
+							$if player['player_position'] == position[0]:
+								<tr>
+									<td>$player['player_name']</td>
+									<td>$player['player_nfl_team']</td>
+									<td>$$$player['bid_amount']</td>
+									<td class="keepButtonCell" playerId="$player['player_id']">
+										$if player['lineup_player_keep'] == '1':
+											<button class="btn btn-danger btn-keep" onclick="changeKeep()">Unkeep</button>
+										$else:
+											<button class="btn btn-primary btn-keep" onclick="changeKeep()">Keep</button>
+									</td>
+								</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 
-	$if 'userid' in utils.session and utils.filters.userId == utils.session.userid:
-		<h2>Bids</h2>
-		$:utils.template.render('html/components', globals={'utils': utils}).bidsTable(bidsList)
+$if 'userid' in utils.session and utils.filters.userId == utils.session.userid:
+	<div class="row">
+		<div class="span2">
+			<h3>bids</h3>
+		</div>
+		<div class="span10">
+			$:utils.template.render('html/components', globals={'utils': utils}).bidsTable(bidsList)
+		</div>
+	</div>
 </div>
 
 $:utils.template.render('html/components').commonFooter()

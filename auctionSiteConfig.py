@@ -8,12 +8,14 @@ urls = (
 	'/', 'urlHandlers.Home',
 	'/bid', 'urlHandlers.Bid',
 	'/api/bid', 'apiHandlers.Bid',
-	'/reset', 'ajaxHandlers.Reset',
+	'/ajax/logout', 'ajaxHandlers.Reset',
 	'/ajax/login', 'ajaxHandlers.Login',
 	'/team', 'urlHandlers.Team',
 	'/api/keep', 'apiHandlers.Keep',
 	'/ajax/register', 'ajaxHandlers.Register',
-	'/rules', 'urlHandlers.Rules'
+	'/rules', 'urlHandlers.Rules',
+	'/account', 'urlHandlers.Account',
+	'/ajax/changeaccount', 'ajaxHandlers.ChangeAccount'
 )
 
 app = web.application(urls, globals())

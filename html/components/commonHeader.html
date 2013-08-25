@@ -36,17 +36,17 @@ $def addOnloadHandler():
                     </ul>
                 $if 'loggedin' not in utils.session or utils.session.loggedin == False:
                     <form class="navbar-form pull-right">
-                        <input type="text" name="username" placeholder="team name" class="input-small"/>
-                        <input type="password" name="password" placeholder="password" class="input-small"/>
-                        <button type="button" class="btn" onclick="login()">
+                        <input type="text" name="username" placeholder="team name or email" class="input-medium"/>
+                        <input type="password" name="password" placeholder="password" class="input-medium"/>
+                        <button type="submit" class="btn" onclick="login()">
                             login
                         </button>
                     </form>
                 $else:
                     <div class="pull-right">
                         <ul class="nav">
-                            <li><a href="/reset">Sign Out</a></li>
-                            <li><a href="">My Account</a></li>
+                            <li><a href="" onclick="logout()">sign out</a></li>
+                            <li><a href="/account">account</a></li>
                         </ul>
                     </div>
                     <div class="pull-right" id="welcome-message">
