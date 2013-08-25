@@ -5,4 +5,4 @@ SQL_INSERT_WEEK = "INSERT INTO t_weeks (week_number, season_year) VALUES($weekNu
 db = web.database(dbn='mysql', db='AuctionBeta', user='root')
 
 for week in range(15):
-	db.query(SQL_INSERT_WEEK, params={'weekNum': week + 1})
+	db.query(SQL_INSERT_WEEK, vars={'weekNum': week + 1})
