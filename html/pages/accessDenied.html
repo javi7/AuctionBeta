@@ -1,0 +1,11 @@
+$def with()
+
+$:utils.template.render('html/components', globals={'utils': utils}).commonHeader([], [], None)
+
+<div class="container">
+	<h3>you must be logged in to view this page</h3>
+	<h4>use the two boxes and the button</h4>
+	<p>in the top right corner</p>
+</div>
+
+$:utils.template.render('html/components').commonFooter()

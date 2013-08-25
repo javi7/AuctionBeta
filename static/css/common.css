@@ -3,3 +3,4 @@ body { padding-top: 60px;}
 #welcome-message { padding-top: 10px; color: white;}
 h1, h2, h3 { margin: 0;}
 .row { margin-bottom: 15px;}
+label { cursor: default;}

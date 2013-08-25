@@ -1,6 +1,6 @@
 $def with()
 
-$:utils.template.render('html/components', globals={'utils': utils}).commonHeader(['account.js'], [], None)
+$:utils.template.render('html/components', globals={'utils': utils}).commonHeader(['account.js'], ['account.css'], None)
 
 <div class="container">
 	<div class="row">
@@ -42,6 +42,12 @@ $:utils.template.render('html/components', globals={'utils': utils}).commonHeade
 					</div>
 				</div>
 				<div class="control-group">
+					<label class="control-label">verify new password</label>
+					<div class="controls">
+						<input type="password" name="newpassword2" />
+					</div>
+				</div>
+				<div class="control-group">
 					<label class="control-label">old password</label>
 					<div class="controls">
 						<input type="password" name="password" />
@@ -55,7 +61,7 @@ $:utils.template.render('html/components', globals={'utils': utils}).commonHeade
 			</form>
 		</div>
 	</div>
-	<div class="row">
+	<!-- <div class="row">
 		<div class="span4">
 			<h3>change email</h3>
 		</div>
@@ -80,7 +86,7 @@ $:utils.template.render('html/components', globals={'utils': utils}).commonHeade
 				</div>
 			</form>
 		</div>
-	</div>
+	</div> -->
 </div>
 
 $:utils.template.render('html/components', globals={'utils': utils}).commonFooter()

@@ -36,28 +36,36 @@ class Account:
 		session = web.config._session
 		if 'userid' in session and session.userid != None:
 			return str(getTemplateSystem(session).account())
+		else:
+			return str(getTemplateSystem(session).accessDenied())
 
 class Bid:
 	def GET(self):
 		session = web.config._session
-		userId = session.userid
-		filters = web.input(pos='All', offset=0, search="", week=None, avail='Available', showBids='Hide')
-		if filters.week != None:
-			filters.week = int(filters.week)
+		if 'userid' in session and session.userid != None:
+			userId = session.userid
+			filters = web.input(pos='All', offset=0, search="", week=None, avail='Available', showBids='Hide')
+			if filters.week != None:
+				filters.week = int(filters.week)
+			else:
+				filters.week = auctionDb.getCurrentWeek()
+			playerList = auctionDb.getNflPlayersForBidding(userId, filters.pos, filters.offset, 
+				filters.week, filters.search, filters.avail, filters.showBids)
+			return str(getTemplateSystem(session, filters).bid(playerList))
 		else:
-			filters.week = auctionDb.getCurrentWeek()
-		playerList = auctionDb.getNflPlayersForBidding(userId, filters.pos, filters.offset, 
-			filters.week, filters.search, filters.avail, filters.showBids)
-		return str(getTemplateSystem(session, filters).bid(playerList))
+			return str(getTemplateSystem(session).accessDenied())
 
 class Team:
 	def GET(self):
 		session = web.config._session
-		userId = session.userid
 		filters = web.input(week=None, team=None)
-		if filters.team == None:
+		if filters.team != None:
+			userId = auctionDb.getUser(username=filters.team)['user_id']
+		elif 'userid' in session and session.userid != None:
+			userId = session.userid
 			filters.team = auctionDb.getUser(userId=userId)['user_alias']
 		else:
+			filters.team = auctionDb.getAllTeamNames()[0]
 			userId = auctionDb.getUser(username=filters.team)['user_id']
 		if filters.week != None:
 			filters.week = int(filters.week)
