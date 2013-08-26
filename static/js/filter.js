@@ -23,7 +23,7 @@ function amendUrlParams(name, value) {
 		var paramArray = String.split(prevParams,'&');
 		for (var i = 0; i < paramArray.length; i++) {
 			var param = paramArray[i];
-			if (param.substring(0, param.indexOf('=')) == name) {
+			if ([name, 'offset'].contains(param.substring(0, param.indexOf('=')))) {
 				continue;
 			} else {
 				if (filteredUrl.indexOf('?') != filteredUrl.length - 1) {

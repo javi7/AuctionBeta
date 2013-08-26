@@ -9,47 +9,54 @@ $def searchValue():
 	if utils.filters['search'] != None:
 		value=$utils.filters['search']
 
-$:utils.template.render('html/components', globals={'utils': utils}).commonHeader(['bidTable.js', 'filter.js'], ['bidTable.css', 'bid.css'], "formatBidsTable()")
+$:utils.template.render('html/components', globals={'utils': utils}).commonHeader(['bidTable.js', 'filter.js', 'bid.js'], ['bidTable.css', 'bid.css'], "formatBidsTable()")
 
 <div class="container">
-	<div class="well well-small">
-		<form class="form-inline" onsubmit="filter()">
-			Availability
-			<div class='btn-group bid-input-element'>
-			$for val in ['All', 'Available']:
-				<button type="button" class='btn' name="avail" value="$val" onclick="filter()" $selectButton('avail', val)>$val</button>
-			</div>
-			Bids
-			<div class='btn-group'>
-			$for val in ['Show', 'Hide']:
-				<button type="button" class="btn" name="showBids" value="$val" onclick="filter()" $selectButton('showBids', val)>$val</button>
-			</div>
-		</form>
-		<form class="form-inline" onsubmit="filter()">
-			Position
-			<div class='btn-group bid-input-element'>
-			$for val in ['All', 'QB', 'RB', 'WR']:
-				<button type="button" class="btn" name="pos" value="$val" onclick="filter()" $selectButton('pos', val)>$val</button>
-			</div>
-			Week
-			<select name="week" class="input-mini bid-input-element" onchange="filter()">
-				$:utils.template.render('html/components', globals={'utils': utils}).dropdown(utils.weeks, utils.filters.week)
-			</select>
-		
-			<div class="input-append bid-input-element">
-				<input type="text" name="search" class="span2" placeholder="Search" id="js_search_filter" $searchValue()>
-				<button type="button" class="btn" name="search" onclick="filter()">Go</button>
-				<button type="button" class="btn" name="clearSearch" onclick="filter()">Clear</button>
-			</div>
-		</form>
+	<div class="row">
+		<div class="well well-small">
+			<form class="form-inline" onsubmit="filter()">
+				Availability
+				<div class='btn-group bid-input-element'>
+				$for val in ['All', 'Available']:
+					<button type="button" class='btn' name="avail" value="$val" onclick="filter()" $selectButton('avail', val)>$val</button>
+				</div>
+				Bids
+				<div class='btn-group'>
+				$for val in ['Show', 'Hide']:
+					<button type="button" class="btn" name="showBids" value="$val" onclick="filter()" $selectButton('showBids', val)>$val</button>
+				</div>
+			</form>
+			<form class="form-inline" onsubmit="filter()">
+				Position
+				<div class='btn-group bid-input-element'>
+				$for val in ['All', 'QB', 'RB', 'WR']:
+					<button type="button" class="btn" name="pos" value="$val" onclick="filter()" $selectButton('pos', val)>$val</button>
+				</div>
+				Week
+				<select name="week" class="input-mini bid-input-element" onchange="filter()">
+					$:utils.template.render('html/components', globals={'utils': utils}).dropdown(utils.weeks, utils.filters.week)
+				</select>
+			
+				<div class="input-append bid-input-element">
+					<input type="text" name="search" class="span2" placeholder="Search" id="js_search_filter" $searchValue()>
+					<button type="button" class="btn" name="search" onclick="filter()">Go</button>
+					<button type="button" class="btn" name="clearSearch" onclick="filter()">Clear</button>
+				</div>
+			</form>
+		</div>
 	</div>
-
-$:utils.template.render('html/components', globals={'utils': utils}).bidsTable(playersList)
-	<div class="row" id="bid-page-links">
+	<div class="row">
+		<div class="span1">
 		$if utils.filters.prev:
-			<a href=""><-Prev</a>
+			<a href="" class="offset-link" onclick="changeOffset($utils.filters.offset - 50)"><-Prev</a>
+		</div>
+		<div class="span10">
+			$:utils.template.render('html/components', globals={'utils': utils}).bidsTable(playersList)
+		</div>
+		<div class="span1 offset-link-div">
 		$if utils.filters.next:
-			<a href="">Next -></a>
+			<a href="" class="offset-link" onclick="changeOffset($utils.filters.offset + 50)">Next -></a>
+		</div>
 	</div>
 </div>
 $:utils.template.render('html/components').commonFooter()

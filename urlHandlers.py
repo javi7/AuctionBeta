@@ -49,7 +49,7 @@ class Bid:
 				filters.week = int(filters.week)
 			else:
 				filters.week = auctionDb.getCurrentWeek()
-			playerList, filters.next = auctionDb.getNflPlayersForBidding(userId, filters.pos, filters.offset, 
+			playerList, filters.next = auctionDb.getNflPlayersForBidding(userId, filters.pos, int(filters.offset), 
 				filters.week, filters.search, filters.avail, filters.showBids)
 			filters.prev = filters.offset > 0
 			return str(getTemplateSystem(session, filters).bid(playerList))

@@ -1,3 +1,2 @@
 .bid-input-element { margin-right: 20px;}
-#bid-page-links { margin-top: 0; text-align: center}
-#bid-page-links a { margin: 0 10px;}
+.offset-link { position: fixed;}
