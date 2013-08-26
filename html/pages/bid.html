@@ -45,5 +45,11 @@ $:utils.template.render('html/components', globals={'utils': utils}).commonHeade
 	</div>
 
 $:utils.template.render('html/components', globals={'utils': utils}).bidsTable(playersList)
+	<div class="row" id="bid-page-links">
+		$if utils.filters.prev:
+			<a href=""><-Prev</a>
+		$if utils.filters.next:
+			<a href="">Next -></a>
+	</div>
 </div>
 $:utils.template.render('html/components').commonFooter()

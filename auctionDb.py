@@ -166,7 +166,15 @@ def getNflPlayersForBidding(userId, playerPosition, offset, weekId, search, avai
 		'userId': userId, 'positionList': positionList, 
 		'offset': offset, 'weekId': weekId, 'search': '%' + search + '%'
 	})
-	return nflPlayersResult.list()
+	nflPlayersMoreResult = query(nflPlayerQuery, {
+		'userId': userId, 'positionList': positionList, 
+		'offset': offset + 50, 'weekId': weekId, 'search': '%' + search + '%'
+	})
+	if len(nflPlayersMoreResult) > 0:
+		more = True
+	else:
+		more = False
+	return nflPlayersResult.list(), more
 
 def getBidsForProcessing(weekId):
 	bidsResult = query(SELECT_BIDS_FOR_PROCESSING, {
