@@ -5,13 +5,15 @@ import auctionDb
 class TempletorUtils:
 	session = None
 	template = web.template
-	weeks = auctionDb.getAllWeeks()
+	weeks = None
 	filters = None
-	users = auctionDb.getAllTeamNames()
+	users = None
 
 	def __init__(self, session=None, filters=None):
 		self.session = session
 		self.filters = filters
+		self.weeks = auctionDb.getAllWeeks()
+		self.users = auctionDb.getAllTeamNames()
 
 def getTemplateSystem(session=None, filters=None):
 	return web.template.render('html/pages', globals = {
