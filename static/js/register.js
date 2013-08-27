@@ -1,6 +1,6 @@
-function register() {
-	event.preventDefault();
-	var form = event.target.getParent('form');
+function register(e) {
+	e.preventDefault();
+	var form = e.target.getParent('form');
 	var pw1 = form.getElement('input[name="pw1"]').get('value');
 	var pw2 = form.getElement('input[name="pw2"]').get('value');
 	if (pw1 != pw2) {

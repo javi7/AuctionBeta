@@ -32,15 +32,15 @@ $def addOwner(p):
                         $ bid = player['bid_amount']
                         <input class="bidinput input-mini" type="number" min="1" />
                         <div class="bidbuttongroup editbiddiv">
-                            <button type="button" class="btn btn-info" onclick="editBid()">
+                            <button type="button" class="btn btn-info" onclick="editBid(event)">
                                 Edit Bid
                             </button>
-                            <button type="button" class="btn btn-danger" onclick="cancelBid()">
+                            <button type="button" class="btn btn-danger" onclick="cancelBid(event)">
                                 Cancel Bid
                             </button>
                         </div>
                         <div class="bidbuttongroup placebiddiv">
-                            <button type="button" class="btn btn-primary" onclick="placeBid()">
+                            <button type="button" class="btn btn-primary" onclick="placeBid(event)">
                                 Place Bid
                             </button>
                         </div>

@@ -2,8 +2,8 @@ function getWeekId() {
 	return $$('select[name="week"]')[0].get('value')
 }
 
-function placeBid() {
-	var bidCell = event.target.getParent('td');
+function placeBid(e) {
+	var bidCell = e.target.getParent('td');
 	var bidAmount = bidCell.getElement('input').get('value')
 	var placeBidPost = new Request({
 		url: '/api/bid',
@@ -34,15 +34,15 @@ function placeBid() {
 	}
 }
 
-function editBid() {
-	var bidCell = event.target.getParent('td');
+function editBid(e) {
+	var bidCell = e.target.getParent('td');
 	bidCell.getElement(".editbiddiv").hide();
 	bidCell.getElement(".placebiddiv").show();
 	bidCell.getElement("input").set('disabled');
 }
 
-function cancelBid() {
-	var bidCell = event.target.getParent('td');
+function cancelBid(e) {
+	var bidCell = e.target.getParent('td');
 	var deleteBid = new Request({
 		url: '/api/bid',
 		method: 'delete',

@@ -37,14 +37,14 @@ $def addOnloadHandler():
                     <form class="navbar-form pull-right">
                         <input type="text" name="username" placeholder="team name or email" class="input-medium"/>
                         <input type="password" name="password" placeholder="password" class="input-medium"/>
-                        <button type="submit" class="btn" onclick="login()">
+                        <button type="submit" class="btn" onclick="login(event)">
                             login
                         </button>
                     </form>
                 $else:
                     <div class="pull-right">
                         <ul class="nav">
-                            <li><a href="" onclick="logout()">sign out</a></li>
+                            <li><a href="" onclick="logout(event)">sign out</a></li>
                             <li><a href="/account">account</a></li>
                         </ul>
                     </div>

@@ -5,13 +5,13 @@ $:utils.template.render('html/components', globals={'utils': utils}).commonHeade
 <div class="container">
 	<div class="row">
 		<div class="well well-small">
-			<form class="form-inline" onsubmit="filter()">
+			<form class="form-inline" onsubmit="filter(event)">
 				Week
-				<select name="week" onchange="filter()">
+				<select name="week" onchange="filter(event)">
 					$:utils.template.render('html/components', globals={'utils': utils}).dropdown(utils.weeks, utils.filters.week)
 				</select>
 				Team
-				<select name="team" onchange="filter()">
+				<select name="team" onchange="filter(event)">
 					$:utils.template.render('html/components', globals={'utils': utils}).dropdown(utils.users, utils.filters.team)
 				</select>
 			</form>
@@ -38,9 +38,9 @@ $if rosterList != None:
 									<td>$$$player['bid_amount']</td>
 									<td class="keepButtonCell" playerId="$player['player_id']">
 										$if player['lineup_player_keep'] == '1':
-											<button class="btn btn-danger btn-keep" onclick="changeKeep()">Unkeep</button>
+											<button class="btn btn-danger btn-keep" onclick="changeKeep(event)">Unkeep</button>
 										$else:
-											<button class="btn btn-primary btn-keep" onclick="changeKeep()">Keep</button>
+											<button class="btn btn-primary btn-keep" onclick="changeKeep(event)">Keep</button>
 									</td>
 								</tr>
 				</tbody>

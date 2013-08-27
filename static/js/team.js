@@ -1,5 +1,5 @@
-function changeKeep() {
-	var keepCell = event.target.getParent('td');
+function changeKeep(e) {
+	var keepCell = e.target.getParent('td');
 	var keep = keepCell.getElement('button').get('text') == 'Unkeep' ? 0 : 1;
 	var keepPost = new Request({
 		url: '/api/keep',

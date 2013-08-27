@@ -1,6 +1,6 @@
-function login() {
-	event.preventDefault();
-	var form = event.target.getParent('form');
+function login(e) {
+	e.preventDefault();
+	var form = e.target.getParent('form');
 	var loginPost = new Request({
 		url: '/ajax/login',
 		method: 'post',
@@ -24,8 +24,8 @@ function login() {
 	loginPost.post();
 }
 
-function logout() {
-	event.preventDefault();
+function logout(e) {
+	e.preventDefault();
 	var logoutPost = new Request({
 		url: '/ajax/logout',
 		method: 'post',

@@ -1,6 +1,6 @@
-function filter() {
-	event.preventDefault();
-	var caller = event.target;
+function filter(e) {
+	e.preventDefault();
+	var caller = e.target;
 	if (caller.get('name') != 'clearSearch') {
 		if (caller.get('name') == 'search' || caller.get('class') == 'form-inline') {
 			caller = $("js_search_filter");

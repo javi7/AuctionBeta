@@ -14,33 +14,33 @@ $:utils.template.render('html/components', globals={'utils': utils}).commonHeade
 <div class="container">
 	<div class="row">
 		<div class="well well-small">
-			<form class="form-inline" onsubmit="filter()">
+			<form class="form-inline" onsubmit="filter(event)">
 				Availability
 				<div class='btn-group bid-input-element'>
 				$for val in ['All', 'Available']:
-					<button type="button" class='btn' name="avail" value="$val" onclick="filter()" $selectButton('avail', val)>$val</button>
+					<button type="button" class='btn' name="avail" value="$val" onclick="filter(event)" $selectButton('avail', val)>$val</button>
 				</div>
 				Bids
 				<div class='btn-group'>
 				$for val in ['Show', 'Hide']:
-					<button type="button" class="btn" name="showBids" value="$val" onclick="filter()" $selectButton('showBids', val)>$val</button>
+					<button type="button" class="btn" name="showBids" value="$val" onclick="filter(event)" $selectButton('showBids', val)>$val</button>
 				</div>
 			</form>
-			<form class="form-inline" onsubmit="filter()">
+			<form class="form-inline" onsubmit="filter(event)">
 				Position
 				<div class='btn-group bid-input-element'>
 				$for val in ['All', 'QB', 'RB', 'WR']:
-					<button type="button" class="btn" name="pos" value="$val" onclick="filter()" $selectButton('pos', val)>$val</button>
+					<button type="button" class="btn" name="pos" value="$val" onclick="filter(event)" $selectButton('pos', val)>$val</button>
 				</div>
 				Week
-				<select name="week" class="input-mini bid-input-element" onchange="filter()">
+				<select name="week" class="input-mini bid-input-element" onchange="filter(event)">
 					$:utils.template.render('html/components', globals={'utils': utils}).dropdown(utils.weeks, utils.filters.week)
 				</select>
 			
 				<div class="input-append bid-input-element">
 					<input type="text" name="search" class="span2" placeholder="Search" id="js_search_filter" $searchValue()>
-					<button type="button" class="btn" name="search" onclick="filter()">Go</button>
-					<button type="button" class="btn" name="clearSearch" onclick="filter()">Clear</button>
+					<button type="button" class="btn" name="search" onclick="filter(event)">Go</button>
+					<button type="button" class="btn" name="clearSearch" onclick="filter(event)">Clear</button>
 				</div>
 			</form>
 		</div>
