@@ -1,0 +1,24 @@
+DELIMITER //
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `new_matchup`(week INT, user1 INT, user2 INT)
+begin insert into t_games(week_id) VALUES(week); insert into t_matchups(select LAST_INSERT_ID(), user1); insert into t_matchups(select LAST_INSERT_ID(), user2); end//
+
+DELIMITER ;
+
+CREATE TABLE `t_games` (
+  `game_id` int(11) NOT NULL AUTO_INCREMENT,
+  `week_id` int(11) NOT NULL,
+  PRIMARY KEY (`game_id`),
+  KEY `week_id` (`week_id`),
+  CONSTRAINT `t_games_ibfk_1` FOREIGN KEY (`week_id`) REFERENCES `t_weeks` (`week_id`) ON DELETE CASCADE
+);
+
+CREATE TABLE `t_matchups` (
+  `game_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  PRIMARY KEY (`game_id`,`user_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `t_matchups_ibfk_1` FOREIGN KEY (`game_id`) REFERENCES `t_games` (`game_id`) ON DELETE CASCADE,
+  CONSTRAINT `t_matchups_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `t_site_users` (`user_id`) ON DELETE CASCADE
+);
+
