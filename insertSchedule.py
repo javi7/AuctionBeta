@@ -21,7 +21,7 @@ for row in csvReader:
 	if len(row) == 0:
 		week = week + 1
 	else:
-		db.query(CALL_NEW_MATCHUP, vars={'week': week, 'user1': testIdMap[row[0]], 'user2': testIdMap[row[1]]})
+		db.query(CALL_NEW_MATCHUP, vars={'week': week, 'user1': userIdMap[row[0]], 'user2': userIdMap[row[1]]})
 		#create new Game
 		#create two matchups
 
