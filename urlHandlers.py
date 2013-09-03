@@ -84,7 +84,7 @@ class Standings:
 		session = web.config._session
 		return str(getTemplateSystem(session).comingSoon())
 
-class Schedule:
+class Scoreboard:
 	def GET(self):
 		session = web.config._session
 		return str(getTemplateSystem(session).comingSoon())	
