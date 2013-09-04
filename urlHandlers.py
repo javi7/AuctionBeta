@@ -87,4 +87,10 @@ class Standings:
 class Scoreboard:
 	def GET(self):
 		session = web.config._session
-		return str(getTemplateSystem(session).comingSoon())	
+		filters = web.input(week=None)
+		if filters.week == None:
+			filters.week = auctionDb.getCurrentWeek()
+		else:
+			filters.week = int(filters.week)
+		weekMatchups = auctionDb.getWeekMatchups(filters.week)
+		return str(getTemplateSystem(session, filters).scoreboard(weekMatchups))	

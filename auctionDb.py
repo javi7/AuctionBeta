@@ -92,7 +92,8 @@ UPDATE_CHANGE_TEAM_NAME = 'UPDATE t_site_users SET user_alias=$teamName WHERE us
 
 UPDATE_CHANGE_EMAIL = 'UPDATE t_site_users SET user_email=$email WHERE user_id=$userId'
 
-SELECT_GAMES_BY_WEEK = 'SELECT m.* FROM t_matchups m JOIN t_games g ON m.game_id=g.game_id WHERE g.week_id=$weekId ORDER BY game_id DESC'
+SELECT_GAMES_BY_WEEK = 'SELECT m.*, u.user_alias FROM t_matchups m JOIN t_games g ON m.game_id=g.game_id ' +\
+						' JOIN t_site_users u ON u.user_id=m.user_id WHERE g.week_id=$weekId ORDER BY game_id DESC, u.user_alias DESC '
 
 def query(queryString, queryParams):
 	dbase = db.database(dbn='mysql', db='AuctionBeta', user='root')
@@ -257,3 +258,10 @@ def changeTeamName(userId, teamName):
 	query(UPDATE_CHANGE_TEAM_NAME, {
 		'userId': userId, 'teamName': teamName
 	})
+
+def getWeekMatchups(weekId):
+	weekMatchupsResult = query(SELECT_GAMES_BY_WEEK, {
+		'weekId': weekId
+	})
+	return weekMatchupsResult
+
