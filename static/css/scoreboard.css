@@ -1,0 +1,3 @@
+.scoreboard-team1, .scoreboard-score1 { text-align: right; }
+.scoreboard-team2, .scoreboard-score2 { text-align: left; }
+.scoreboard-team1, .scoreboard-team2 { font-weight: bold; }
