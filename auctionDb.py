@@ -92,6 +92,8 @@ UPDATE_CHANGE_TEAM_NAME = 'UPDATE t_site_users SET user_alias=$teamName WHERE us
 
 UPDATE_CHANGE_EMAIL = 'UPDATE t_site_users SET user_email=$email WHERE user_id=$userId'
 
+SELECT_GAMES_BY_WEEK = 'SELECT m.* FROM t_matchups m JOIN t_games g ON m.game_id=g.game_id WHERE g.week_id=$weekId ORDER BY game_id DESC'
+
 def query(queryString, queryParams):
 	dbase = db.database(dbn='mysql', db='AuctionBeta', user='root')
 	return dbase.query(queryString, vars=queryParams)
