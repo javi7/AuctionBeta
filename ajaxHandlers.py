@@ -39,7 +39,7 @@ class Reset:
 class Register:
 	def POST(self):
 		data = urlparse.parse_qs(web.data())
-		print 'POST MADE to /ajax/register -- ' + data['email'][0]
+		print 'POST MADE to /ajax/register'
 		username = data['username'][0]
 		password = data['password'][0]
 		email = data['email'][0]

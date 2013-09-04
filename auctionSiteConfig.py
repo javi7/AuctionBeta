@@ -16,7 +16,7 @@ urls = (
 	'/rules', 'urlHandlers.Rules',
 	'/account', 'urlHandlers.Account',
 	'/ajax/changeaccount', 'ajaxHandlers.ChangeAccount',
-	'/scoreboard', 'urlHandlers.Scoreboard',
+	'/schedule', 'urlHandlers.Schedule',
 	'/standings', 'urlHandlers.Standings'
 )
 
