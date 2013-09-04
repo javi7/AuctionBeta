@@ -6,8 +6,8 @@ $:utils.template.render('html/components', globals={'utils': utils}).commonHeade
     <div class="row">
         <div class="well well-small">
             <form class="form-inline" onsubmit="filter(event)">
-                Week $utils.filters.week
-                <select name="week" onchange="filter(event)">
+                Week
+		<select name="week" onchange="filter(event)">
                     $:utils.template.render('html/components', globals={'utils': utils}).dropdown(utils.weeks, utils.filters.week)
                 </select>
             </form>
