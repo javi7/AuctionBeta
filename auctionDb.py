@@ -68,7 +68,7 @@ SELECT_LINEUP_ID = 'SELECT lineup_id FROM t_lineups WHERE user_id=$userId AND we
 SELECT_LINEUP = 'SELECT np.*, b.bid_amount, lp.lineup_player_keep FROM t_lineups l JOIN t_lineup_players lp ON ' +\
 				'l.lineup_id=lp.lineup_id AND l.user_id=$userId AND l.week_id=$weekId ' +\
 				'JOIN t_nfl_players np on lp.player_id=np.player_id JOIN t_bids b ON l.user_id=b.user_id ' +\
-				'AND lp.player_id=b.player_id AND l.week_id=b.week_id'
+				'AND lp.player_id=b.player_id AND l.week_id=b.week_id and b.bid_status=1'
 
 SELECT_CURRENT_USER_BIDS = 'SELECT t_nfl_players.*, b1.player_id as bid_player_id, '+\
 									'b1.bid_amount FROM t_nfl_players JOIN t_bids b1 ' +\
