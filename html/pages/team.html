@@ -36,6 +36,7 @@ $if rosterList != None:
 									<td>$player['player_name']</td>
 									<td>$player['player_nfl_team']</td>
 									<td>$$$player['bid_amount']</td>
+								$if 'userid' in utils.session and utils.filters.userId == utils.session.userid:
 									<td class="keepButtonCell" playerId="$player['player_id']">
 										$if player['lineup_player_keep'] == '1':
 											<button class="btn btn-danger btn-keep" onclick="changeKeep(event)">Unkeep</button>
