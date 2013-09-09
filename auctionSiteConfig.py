@@ -17,7 +17,8 @@ urls = (
 	'/account', 'urlHandlers.Account',
 	'/ajax/changeaccount', 'ajaxHandlers.ChangeAccount',
 	'/scoreboard', 'urlHandlers.Scoreboard',
-	'/standings', 'urlHandlers.Standings'
+	'/standings', 'urlHandlers.Standings',
+	'/game/([1-9][0-9]*)', 'urlHandlers.Game'
 )
 
 app = web.application(urls, globals())

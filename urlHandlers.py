@@ -94,3 +94,8 @@ class Scoreboard:
 			filters.week = int(filters.week)
 		weekMatchups = auctionDb.getWeekMatchups(filters.week)
 		return str(getTemplateSystem(session, filters).scoreboard(weekMatchups))	
+
+class Game:
+	def GET(self, gameId):
+		session = web.config._session
+		return str(getTemplateSystem(session).comingSoon())
