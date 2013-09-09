@@ -92,7 +92,7 @@ UPDATE_CHANGE_TEAM_NAME = 'UPDATE t_site_users SET user_alias=$teamName WHERE us
 
 UPDATE_CHANGE_EMAIL = 'UPDATE t_site_users SET user_email=$email WHERE user_id=$userId'
 
-SELECT_GAMES_BY_WEEK = 'SELECT m.*, u.user_alias FROM t_matchups m JOIN t_games g ON m.game_id=g.game_id ' +\
+SELECT_GAMES_BY_WEEK = 'SELECT m.*, u.user_alias, u.user_id FROM t_matchups m JOIN t_games g ON m.game_id=g.game_id ' +\
 						' JOIN t_site_users u ON u.user_id=m.user_id WHERE g.week_id=$weekId ORDER BY game_id DESC, u.user_alias DESC '
 
 SELECT_WEEK_DATES = 'SELECT week_start, week_end FROM t_weeks WHERE week_id=$weekId'
@@ -104,6 +104,14 @@ INSERT_NEW_PERFORMANCE = 'INSERT INTO t_performances $fields VALUES $values'
 DELETE_PERFORMANCE = 'DELETE FROM t_performances WHERE player_id=$playerId AND week_id=$weekId'
 
 SELECT_PERFORMANCE = 'SELECT * FROM t_performances WHERE player_id=$playerId AND week_id=$weekId'
+
+SELECT_LINEUP_PERFORMANCES = 'SELECT p.* FROM t_performances JOIN t_lineup_players lp ' +\
+								'ON lp.player_id=p.player_id JOIN t_lineups l ON l.lineup_id=lp.lineup_id ' +\
+								' AND l.user_id=$userId AND l.week_id=$weekId'
+
+SELECT_MATCHUP_TEAM_SCORES = 'SELECT SUM(p.total_pts), l.user_id FROM t_performances p JOIN t_lineup_players lp ' +\
+								'ON lp.player_id=p.player_id JOIN t_lineups l ON l.lineup_id=lp.lineup_id AND l.weekId=$weekId' +\
+								' GROUP BY l.user_id'
 
 dbase = db.database(dbn='mysql', db='AuctionBeta', user='root')
 
@@ -303,3 +311,18 @@ def removePerformance(playerId, weekId):
 	removePerformanceResult = query(DELETE_PERFORMANCE, {
 		'playerId': playerId, 'weekId': weekId
 	})
+
+def getTeamPerformances(userId, weekId):
+	teamPerformanceResult = query(SELECT_LINEUP_PERFORMANCES, {
+		'userId': userId, 'weekId': weekId
+	})
+	return teamPerformanceResult
+
+def getMatchupScores(weekId):
+	matchupScoresResult = query(SELECT_MATCHUP_TEAM_SCORES, {
+		'weekId': weekId
+	})
+	matchupScoresMap = {}
+	for score in matchupScoresResult:
+		matchupScoresMap[score['user_id']] = score['total_pts']
+	return matchupScoresMap

@@ -93,6 +93,9 @@ class Scoreboard:
 		else:
 			filters.week = int(filters.week)
 		weekMatchups = auctionDb.getWeekMatchups(filters.week)
+		matchupScores = auctionDb.getMatchupScores(filters.week)
+		for matchup in weekMatchups:
+			matchup['total_pts'] = matchupScores[matchup['user_id']]
 		return str(getTemplateSystem(session, filters).scoreboard(weekMatchups))	
 
 class Game:
