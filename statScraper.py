@@ -57,7 +57,7 @@ def parseStats(statCells, pos):
 			try:
 				stats[statLists[pos][index]] = int(statCells[index + 3].text)
 			except: 
-				'error reading ' + statCells[index + 3]
+				'error reading ' + str(statCells[index + 3])
 			getPoints = statFunctionMap[statLists[pos][index]]
 			if getPoints != None:
 				stats['total_pts'] += getPoints(int(statCells[index + 3].text))
