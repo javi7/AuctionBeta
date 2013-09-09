@@ -110,7 +110,7 @@ SELECT_LINEUP_PERFORMANCES = 'SELECT p.* FROM t_performances JOIN t_lineup_playe
 								' AND l.user_id=$userId AND l.week_id=$weekId'
 
 SELECT_MATCHUP_TEAM_SCORES = 'SELECT SUM(p.total_pts), l.user_id FROM t_performances p JOIN t_lineup_players lp ' +\
-								'ON lp.player_id=p.player_id JOIN t_lineups l ON l.lineup_id=lp.lineup_id AND l.weekId=$weekId' +\
+								'ON lp.player_id=p.player_id JOIN t_lineups l ON l.lineup_id=lp.lineup_id AND l.week_id=$weekId' +\
 								' GROUP BY l.user_id'
 
 dbase = db.database(dbn='mysql', db='AuctionBeta', user='root')
