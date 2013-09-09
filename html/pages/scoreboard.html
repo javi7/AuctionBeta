@@ -16,8 +16,10 @@ $:utils.template.render('html/components', globals={'utils': utils}).commonHeade
 $for index in range(len(matchups)/2):
     <div class="row">
         <div class="span5 scoreboard-team1">$matchups[2 * index]['user_alias']</div>
-        <div class="span1 scoreboard-score1">$matchups[2 * index]['total_pts']</div>
-        <div class="span1 scoreboard-score2">$matchups[2 * index + 1]['total_pts']</div>
+        <a href="/game/$matchups[2 * index]['game_id']"> 
+            <div class="span1 scoreboard-score1">$matchups[2 * index]['total_pts']</div>
+            <div class="span1 scoreboard-score2">$matchups[2 * index + 1]['total_pts']</div>
+        </a>
         <div class="span5 scoreboard-team2">$matchups[2 * index + 1]['user_alias']</div>
     </div>
 </div>
