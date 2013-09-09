@@ -56,24 +56,28 @@ def parseStats(statCells, pos):
 		if statLists[pos][index] != 'skip':
 			try:
 				stats[statLists[pos][index]] = int(statCells[index + 3].text)
+				getPoints = statFunctionMap[statLists[pos][index]]
+				if getPoints != None:
+					stats['total_pts'] += getPoints(int(statCells[index + 3].text))
 			except: 
 				'error reading ' + str(statCells[index + 3])
-			getPoints = statFunctionMap[statLists[pos][index]]
-			if getPoints != None:
-				stats['total_pts'] += getPoints(int(statCells[index + 3].text))
 	return stats
 
 def getStats(playerId, pos, week):
-	playerPage = requests.get(URL_START + str(playerId) + URL_END).text
-	playerSoup = BeautifulSoup(playerPage)
-	playerStats = playerSoup.find('div', 'mod-player-stats')
-	gameLogs = playerStats.findAll('tr', ['evenrow', 'oddrow'])
-	dates = auctionDb.getWeekDates(week)
-	for log in gameLogs:
-		cells = log.findAll('td')
-		if findGame(cells[0].text[4:], dates['week_start'], dates['week_end']):
-			return parseStats(cells, pos)
-	return None
+	try:
+		playerPage = requests.get(URL_START + str(playerId) + URL_END).text
+		playerSoup = BeautifulSoup(playerPage)
+		playerStats = playerSoup.find('div', 'mod-player-stats')
+		gameLogs = playerStats.findAll('tr', ['evenrow', 'oddrow'])
+		dates = auctionDb.getWeekDates(week)
+		for log in gameLogs:
+			cells = log.findAll('td')
+			if findGame(cells[0].text[4:], dates['week_start'], dates['week_end']):
+				return parseStats(cells, pos)
+		return None
+	except:
+		print 'error reading stats for ' + str(playerId) + ' -- week ' + str(week)
+		return None
 
 def insertStats(playerId, stats, week):
 	previousPerformance = auctionDb.getPerformance(playerId, week)
@@ -94,8 +98,8 @@ def main():
 		position = player['player_position']
 		if position == 'TE':
 			position = 'WR'
-		stats = getStats(player['player_id'], position, options.week)
 		print player['player_name']
+		stats = getStats(player['player_id'], position, options.week)
 		print stats
 		if stats:
 			insertStats(player['player_id'], stats, options.week)
