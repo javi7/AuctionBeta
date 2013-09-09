@@ -282,7 +282,7 @@ def getWeekMatchups(weekId):
 	weekMatchupsResult = query(SELECT_GAMES_BY_WEEK, {
 		'weekId': weekId
 	})
-	return weekMatchupsResult
+	return weekMatchupsResult.list()
 
 def getWeekDates(weekId):
 	weekDatesResult = query(SELECT_WEEK_DATES, {
