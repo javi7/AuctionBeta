@@ -101,4 +101,7 @@ class Scoreboard:
 class Game:
 	def GET(self, gameId):
 		session = web.config._session
-		return str(getTemplateSystem(session).comingSoon())
+		gameTeamsMap, weekId = auctionDb.getGameTeams(gameId)
+		for userId in gameTeamsMap.keys():
+			gameTeamsMap[userId]['lineup'] = auctionDb.getTeamPerformances(userId, weekId)
+		return str(getTemplateSystem(session).game(gameTeamsMap))

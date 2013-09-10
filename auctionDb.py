@@ -93,7 +93,7 @@ UPDATE_CHANGE_TEAM_NAME = 'UPDATE t_site_users SET user_alias=$teamName WHERE us
 UPDATE_CHANGE_EMAIL = 'UPDATE t_site_users SET user_email=$email WHERE user_id=$userId'
 
 SELECT_GAMES_BY_WEEK = 'SELECT m.*, u.user_alias, u.user_id FROM t_matchups m JOIN t_games g ON m.game_id=g.game_id ' +\
-						' JOIN t_site_users u ON u.user_id=m.user_id WHERE g.week_id=$weekId ORDER BY game_id DESC, u.user_alias DESC '
+						' JOIN t_site_users u ON u.user_id=m.user_id WHERE g.week_id=$weekId ORDER BY game_id DESC, u.user_alias ASC'
 
 SELECT_WEEK_DATES = 'SELECT week_start, week_end FROM t_weeks WHERE week_id=$weekId'
 
@@ -105,13 +105,18 @@ DELETE_PERFORMANCE = 'DELETE FROM t_performances WHERE player_id=$playerId AND w
 
 SELECT_PERFORMANCE = 'SELECT * FROM t_performances WHERE player_id=$playerId AND week_id=$weekId'
 
-SELECT_LINEUP_PERFORMANCES = 'SELECT p.* FROM t_performances JOIN t_lineup_players lp ' +\
-								'ON lp.player_id=p.player_id JOIN t_lineups l ON l.lineup_id=lp.lineup_id ' +\
-								' AND l.user_id=$userId AND l.week_id=$weekId'
+SELECT_LINEUP_PERFORMANCES = 'SELECT p.*, np.player_name, np.player_position FROM t_lineup_players lp JOIN t_lineups l ' +\
+								'ON l.lineup_id=lp.lineup_id ' +\
+								'AND l.user_id=$userId AND l.week_id=$weekId JOIN t_nfl_players np ON ' +\
+								'np.player_id=lp.player_id LEFT JOIN t_performances p ' +\
+								'ON lp.player_id=p.player_id ORDER BY np.player_position ASC, np.player_id DESC'
 
 SELECT_MATCHUP_TEAM_SCORES = 'SELECT SUM(p.total_pts) AS total_pts, l.user_id FROM t_performances p JOIN t_lineup_players lp ' +\
-								'ON lp.player_id=p.player_id JOIN t_lineups l ON l.lineup_id=lp.lineup_id AND l.week_id=$weekId' +\
-								' GROUP BY l.user_id'
+								'ON lp.player_id=p.player_id JOIN t_lineups l ON l.lineup_id=lp.lineup_id AND l.week_id=$weekId ' +\
+								'GROUP BY l.user_id'
+
+SELECT_GAME_TEAMS = 'SELECT u.user_alias, u.user_id, g.week_id FROM t_games g JOIN t_matchups m ON g.game_id=m.game_id JOIN t_site_users u ' +\
+					'ON u.user_id=m.user_id WHERE g.game_id=$gameId'
 
 dbase = db.database(dbn='mysql', db='AuctionBeta', user='root')
 
@@ -316,7 +321,7 @@ def getTeamPerformances(userId, weekId):
 	teamPerformanceResult = query(SELECT_LINEUP_PERFORMANCES, {
 		'userId': userId, 'weekId': weekId
 	})
-	return teamPerformanceResult
+	return teamPerformanceResult.list()
 
 def getMatchupScores(weekId):
 	matchupScoresResult = query(SELECT_MATCHUP_TEAM_SCORES, {
@@ -326,3 +331,14 @@ def getMatchupScores(weekId):
 	for score in matchupScoresResult:
 		matchupScoresMap[score['user_id']] = score['total_pts']
 	return matchupScoresMap
+
+def getGameTeams(gameId):
+	gameTeamsResult = query(SELECT_GAME_TEAMS, {
+		'gameId': gameId
+	})
+	gameTeamsMap = {}
+	weekId = 0
+	for team in gameTeamsResult:
+		weekId = team['week_id']
+		gameTeamsMap[team['user_id']] = {'teamName': team['user_alias']}
+	return gameTeamsMap, weekId
