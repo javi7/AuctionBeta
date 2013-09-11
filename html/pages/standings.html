@@ -3,10 +3,10 @@ $def with(standingsList)
 $:utils.template.render('html/components', globals={'utils': utils}).commonHeader([], [], None)
 
 $def standingsTable(list):
-	<table class="table">
+	<table class="table table-hover">
 		<thead>
 			<tr>
-				<td></td>
+				<td style="width:300px"></td>
 				<td>wins</td>
 				<td>losses</td>
 				<td>ties</td>
