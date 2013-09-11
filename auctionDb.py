@@ -113,7 +113,7 @@ SELECT_LINEUP_PERFORMANCES = 'SELECT p.*, np.player_name, np.player_position FRO
 
 SELECT_MATCHUP_TEAM_SCORES = 'SELECT SUM(p.total_pts) AS total_pts, l.user_id FROM t_performances p JOIN t_lineup_players lp ' +\
 								'ON lp.player_id=p.player_id JOIN t_lineups l ON l.lineup_id=lp.lineup_id AND l.week_id=$weekId ' +\
-								'GROUP BY l.user_id'
+								'WHERE p.week_id=$weekId GROUP BY l.user_id'
 
 SELECT_GAME_TEAMS = 'SELECT u.user_alias, u.user_id, g.week_id FROM t_games g JOIN t_matchups m ON g.game_id=m.game_id JOIN t_site_users u ' +\
 					'ON u.user_id=m.user_id WHERE g.game_id=$gameId'
@@ -345,6 +345,7 @@ def getMatchupScores(weekId):
 	})
 	matchupScoresMap = {}
 	for score in matchupScoresResult:
+		print score
 		matchupScoresMap[score['user_id']] = score['total_pts']
 	return matchupScoresMap
 
