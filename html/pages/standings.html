@@ -1,0 +1,47 @@
+$def with(standingsList)
+
+$:utils.template.render('html/components', globals={'utils': utils}).commonHeader([], [], None)
+
+$def standingsTable(list):
+	<table class="table">
+		<thead>
+			<tr>
+				<td></td>
+				<td>wins</td>
+				<td>losses</td>
+				<td>ties</td>
+				<td>points for</td>
+			</tr>
+		</thead>
+		<tbody>
+		$for team in list:
+			<tr>
+				<td>$team['user_alias']</td>
+				<td>$team['user_wins']</td>
+				<td>$team['user_losses']</td>
+				<td>$team['user_ties']</td>
+				<td>$team['user_points_for']</td>
+			</tr>
+		</tbody>
+	</table>
+
+<div class="container">
+	<div class="row">
+		<div class="span2">
+			<h3>foghorn</h3>
+		</div>
+		<div class="span10">
+			$:standingsTable(standingsList[:5])
+		</div>
+	</div>
+	<div class="row">
+		<div class="span2">
+			<h3>leghorn</h3>
+		</div>
+		<div class="span10">
+			$:standingsTable(standingsList[5:])
+		</div>
+	</div>
+</div>
+
+$:utils.template.render('html/components').commonFooter()

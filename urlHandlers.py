@@ -82,7 +82,8 @@ class Team:
 class Standings:
 	def GET(self):
 		session = web.config._session
-		return str(getTemplateSystem(session).comingSoon())
+		standingsList = auctionDb.getStandingsList()
+		return str(getTemplateSystem(session).standings(standingsList))
 
 class Scoreboard:
 	def GET(self):

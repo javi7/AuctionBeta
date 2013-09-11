@@ -31,7 +31,7 @@ SELECT_NFL_PLAYERS_FOR_BIDDING_HEAD = 'SELECT np.*, b1.player_id as bid_player_i
 										'WHERE player_position IN $positionList '
 
 SELECT_NFL_PLAYERS_BIDDING_FOOT = 'AND player_name LIKE $search ' +\
-									'ORDER BY player_projection DESC, bid_amount DESC LIMIT 50 ' +\
+									'ORDER BY player_wkal_points DESC, bid_amount DESC LIMIT 50 ' +\
 									'OFFSET $offset'
 
 AVAIL_NFL_PLAYERS = 'AND l.user_id IS NULL '
@@ -124,6 +124,16 @@ SELECT_GET_ALL_KEEPERS = 'SELECT lp.*, l.user_id, b.bid_amount FROM t_lineup_pla
 
 SELECT_LINEUP_PLAYER = 'SELECT * FROM t_lineup_players lp JOIN t_lineups l ON lp.lineup_id=l.lineup_id AND l.week_id=$weekId ' +\
 						'WHERE lp.player_id=$playerId'
+
+UPDATE_NFL_PLAYER_WKAL_POINTS = 'UPDATE t_nfl_players SET player_wkal_points = player_wkal_points + $points ' +\
+								'WHERE player_id=$playerId'
+
+UPDATE_ADD_USER_WIN = 'UPDATE t_site_users SET user_wins = user_wins + 1 WHERE user_id=$userId'
+UPDATE_ADD_USER_LOSS = 'UPDATE t_site_users SET user_losses = user_losses + 1 WHERE user_id=$userId'
+UPDATE_ADD_USER_TIE = 'UPDATE t_site_users SET user_ties = user_ties + 1 WHERE user_id=$userId'
+UPDATE_USER_POINTS_FOR = 'UPDATE t_site_users SET user_points_for = user_points_for + $points WHERE user_id=$userId'
+
+SELECT_USERS_FOR_STANDINGS = 'SELECT * FROM t_site_users ORDER BY user_division DESC, user_wins DESC, user_points_for DESC'
 
 dbase = db.database(dbn='mysql', db='AuctionBeta', user='root')
 
@@ -354,3 +364,26 @@ def getAllKeepers(weekId):
 		'weekId': weekId
 	})
 	return keepersResult.list()
+
+def addWkalPoints(playerId, points):
+	wkalPointsResult = query(UPDATE_NFL_PLAYER_WKAL_POINTS, {
+		'playerId': playerId, 'points': points
+	})
+
+def addUserResult(userId, result, points):
+	if result == 'win':
+		queryString = UPDATE_ADD_USER_WIN
+	elif result == 'loss':
+		queryString = UPDATE_ADD_USER_LOSS
+	elif result == 'tie':
+		queryString = UPDATE_ADD_USER_TIE
+	else:
+		return None
+	userResultResult = query(queryString, {'userId': userId})
+	userPointsResult = query(UPDATE_USER_POINTS_FOR, {
+		'userId': userId, 'points': points
+	})
+
+def getStandingsList():
+	standingsResult = query(SELECT_USERS_FOR_STANDINGS, {})
+	return standingsResult.list()

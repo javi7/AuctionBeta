@@ -87,6 +87,7 @@ def insertStats(playerId, stats, week):
 	newPerformance['player_id'] = int(playerId)
 	newPerformance['week_id'] = int(week)
 	auctionDb.setNewPerformance(newPerformance)
+	auctionDb.addWkalPoints(int(playerId), newPerformance['total_pts'])
 
 def main():
 	parser = OptionParser()
