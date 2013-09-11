@@ -23,7 +23,7 @@ def playerExists(playerId):
 	else:
 		return False
 
-positionIdMap = { 0: 'QB', 2: 'RB', 4: 'WR', 6: 'TE' }
+positionIdMap = { 0: 'QB', 2: 'RB', 4: 'WR', 6: 'WR' }
 db = web.database(dbn='mysql', db='AuctionBeta', user='root')
 
 for positionId in positionIdMap.keys():

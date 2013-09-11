@@ -2,8 +2,7 @@ $def with (playersList)
 
 $def addOwner(p):
     $if 'owner_id' in p.keys() and p['owner_id']:
-        ownerId=$(p['owner_id']) ownerName=$(p['owner_name']) winningBid=$(p['winning_bid'])
-
+        ownerId=$:(p['owner_id']) ownerName=$:(p['owner_name']) winningBid=$:(p['winning_bid'])
 <table class="table">
     <thead>
     </thead>

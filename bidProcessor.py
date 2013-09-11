@@ -49,6 +49,8 @@ def isValidBudget(bid, userMap):
 
 def isValidRoster(bid, userMap):
 	position = bid['player_position']
+	if position == 'TE':
+		position = 'WR'
 	if position not in userMap.keys():
 		return True
 	elif position == 'QB' or len(userMap[position]) > 1:
@@ -67,4 +69,9 @@ def arbitrateBid(playerBidList, statusMap):
 def createLineups(statusMap, weekId):
 	for userId in statusMap.keys():
 		print str(statusMap[userId])
+		players = []
+		for positionKey in statusMap[userId].keys():
+			if positionKey in ['QB', 'RB', 'WR']:
+				for player in statusMap[userId][positionKey]:
+					players.append(player)
 		auctionDb.setNewLineup(userId, weekId, statusMap[userId])

@@ -18,15 +18,15 @@ SELECT_ALL_USER_NAMES = 'SELECT user_alias FROM t_site_users'
 INSERT_NEW_BID = 'INSERT INTO t_bids (player_id, user_id, week_id, bid_amount, bid_time)' +\
 					' VALUES($playerId, $userId, $weekId, $bidAmount, $bidTime)'
 
-SELECT_NFL_PLAYERS_FOR_BIDDING_HEAD = 'SELECT t_nfl_players.*, b1.player_id as bid_player_id, '+\
+SELECT_NFL_PLAYERS_FOR_BIDDING_HEAD = 'SELECT np.*, b1.player_id as bid_player_id, '+\
 										'b1.bid_amount, l.user_id as owner_id, su.user_alias as owner_name, ' +\
-										'b2.bid_amount as winning_bid FROM t_nfl_players LEFT JOIN t_bids b1 ' +\
-										'ON b1.player_id=t_nfl_players.player_id AND b1.user_id=$userId ' +\
+										'b2.bid_amount as winning_bid FROM t_nfl_players np LEFT JOIN t_bids b1 ' +\
+										'ON b1.player_id=np.player_id AND b1.user_id=$userId ' +\
 										'AND b1.bid_status=1 ' +\
-										'AND b1.week_id=$weekId LEFT JOIN t_lineup_players lp ON ' +\
-										'lp.player_id=b1.player_id LEFT JOIN t_lineups l ON ' +\
-										'l.lineup_id=lp.lineup_id LEFT JOIN t_site_users su ON ' +\
-										'su.user_id=l.user_id LEFT JOIN t_bids b2 ON b2.user_id=su.user_id ' +\
+										'AND b1.week_id=$weekId LEFT JOIN (t_lineup_players lp JOIN t_lineups l ' +\
+										'JOIN t_site_users su) ON (lp.player_id=np.player_id AND ' +\
+										'l.lineup_id=lp.lineup_id AND l.week_id=$weekId AND ' +\
+										'su.user_id=l.user_id) LEFT JOIN t_bids b2 ON b2.user_id=su.user_id ' +\
 										'AND b2.week_id=$weekId AND b2.bid_status=1 AND b2.player_id=b1.player_id ' +\
 										'WHERE player_position IN $positionList '
 
@@ -117,6 +117,13 @@ SELECT_MATCHUP_TEAM_SCORES = 'SELECT SUM(p.total_pts) AS total_pts, l.user_id FR
 
 SELECT_GAME_TEAMS = 'SELECT u.user_alias, u.user_id, g.week_id FROM t_games g JOIN t_matchups m ON g.game_id=m.game_id JOIN t_site_users u ' +\
 					'ON u.user_id=m.user_id WHERE g.game_id=$gameId'
+
+SELECT_GET_ALL_KEEPERS = 'SELECT lp.*, l.user_id, b.bid_amount FROM t_lineup_players lp JOIN t_lineups l ON l.lineup_id=lp.lineup_id ' +\
+							'AND l.week_id=$weekId JOIN t_bids b ON b.user_id=l.user_id AND b.player_id=lp.player_id AND b.bid_status=1 ' +\
+							'AND b.week_id=l.week_id WHERE lp.lineup_player_keep=1 ORDER BY l.user_id ASC'
+
+SELECT_LINEUP_PLAYER = 'SELECT * FROM t_lineup_players lp JOIN t_lineups l ON lp.lineup_id=l.lineup_id AND l.week_id=$weekId ' +\
+						'WHERE lp.player_id=$playerId'
 
 dbase = db.database(dbn='mysql', db='AuctionBeta', user='root')
 
@@ -215,20 +222,19 @@ def getNflPlayerPosition(playerId):
 	})
 	return positionResult[0]['player_position']
 
-def setNewLineup(userId, weekId, playerMap):
-	players = []
-	for positionKey in playerMap.keys():
-		if positionKey in ['QB', 'RB', 'WR']:
-			for player in playerMap[positionKey]:
-				players.append(player)
-	query(INSERT_NEW_LINEUP, {
-		'userId': userId, 'weekId': weekId
-	})
+def setNewLineup(userId, weekId, playerIdList):
 	lineupResult = query(SELECT_LINEUP_ID, {
 		'userId': userId, 'weekId': weekId
 	})
+	if not lineupResult:
+		query(INSERT_NEW_LINEUP, {
+			'userId': userId, 'weekId': weekId
+		})
+		lineupResult = query(SELECT_LINEUP_ID, {
+			'userId': userId, 'weekId': weekId
+		})
 	lineupId = lineupResult[0]['lineup_id']
-	for playerId in players:
+	for playerId in playerIdList:
 		query(INSERT_NEW_LINEUP_PLAYER, {
 			'lineupId': lineupId, 'playerId': playerId
 		})
@@ -342,3 +348,9 @@ def getGameTeams(gameId):
 		weekId = team['week_id']
 		gameTeamsMap[team['user_id']] = {'teamName': team['user_alias']}
 	return gameTeamsMap, weekId
+
+def getAllKeepers(weekId):
+	keepersResult = query(SELECT_GET_ALL_KEEPERS, {
+		'weekId': weekId
+	})
+	return keepersResult.list()

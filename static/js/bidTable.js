@@ -71,7 +71,7 @@ function formatBidsTable() {
 			bidCell.getElement(".placebiddiv").hide();
 			bidCell.getElement(".editbiddiv").hide();
 			ownerName = bidCell.get('ownerName');
-			bidCell.getElement(".playerowneddiv").set('text', 'Owned by ' + ownerName);
+			bidCell.getElement(".playerowneddiv").set('text', 'owned by ' + ownerName);
 			bidCell.getElement("input").set('value', bidCell.get('winningBid')).set('disabled', 'disabled');
 		}
 		else if (bidCell.get('bidAmount') > 0) {
