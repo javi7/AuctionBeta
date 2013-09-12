@@ -135,6 +135,9 @@ UPDATE_USER_POINTS_FOR = 'UPDATE t_site_users SET user_points_for = user_points_
 
 SELECT_USERS_FOR_STANDINGS = 'SELECT * FROM t_site_users ORDER BY user_division DESC, user_wins DESC, user_points_for DESC'
 
+SELECT_ALL_LINEUP_PLAYERS = 'SELECT player_id, user_id, bid_amount, player_position FROM t_lineup_players NATURAL JOIN t_lineups ' + \
+							' NATURAL JOIN t_bids NATURAL JOIN t_nfl_players WHERE week_id=$weekId'
+
 dbase = db.database(dbn='mysql', db='AuctionBeta', user='root')
 
 def query(queryString, queryParams):
@@ -245,9 +248,15 @@ def setNewLineup(userId, weekId, playerIdList):
 		})
 	lineupId = lineupResult[0]['lineup_id']
 	for playerId in playerIdList:
-		query(INSERT_NEW_LINEUP_PLAYER, {
-			'lineupId': lineupId, 'playerId': playerId
+		lineupPlayerResult = query(SELECT_LINEUP_PLAYER, {
+			'playerId': playerId, 'weekId': weekId
 		})
+		if not lineupPlayerResult:
+			query(INSERT_NEW_LINEUP_PLAYER, {
+				'lineupId': lineupId, 'playerId': playerId
+			})
+		else:
+			print 'player ' + str(playerId) + ' already owned'
 
 def getLineup(userId, weekId):
 	lineupResult = query(SELECT_LINEUP, {
@@ -388,3 +397,7 @@ def addUserResult(userId, result, points):
 def getStandingsList():
 	standingsResult = query(SELECT_USERS_FOR_STANDINGS, {})
 	return standingsResult.list()
+
+def getAllOwnedPlayers(weekId):
+	ownedPlayersResult = query(SELECT_ALL_LINEUP_PLAYERS, {'weekId': weekId})
+	return ownedPlayersResult.list()

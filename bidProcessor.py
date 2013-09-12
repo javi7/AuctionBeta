@@ -1,8 +1,7 @@
 import auctionDb
 
 def processWeeklyBids(weekId):
-	statusMap = {}
-	boughtPlayersList = []
+	statusMap, boughtPlayersList = processOwnedPlayers(weekId)
 	allBids = auctionDb.getBidsForProcessing(weekId)
 	index = 0
 	while (index < len(allBids)):
@@ -23,6 +22,17 @@ def processWeeklyBids(weekId):
 			boughtPlayersList.append(bid['player_id'])
 	createLineups(statusMap, weekId)
 	return statusMap
+
+def processOwnedPlayers(weekId):
+	statusMap = {}
+	ownedPlayers = auctionDb.getAllOwnedPlayers(weekId)
+	ownedPlayerIds = []
+	for player in ownedPlayers:
+		if player['user_id'] not in statusMap.keys():
+			statusMap[player['user_id']] = { 'budget': 100}
+		success, statusMap = arbitrateBid([player], statusMap)
+		ownedPlayerIds.append(player['player_id'])
+	return statusMap, ownedPlayerIds
 
 def isValidBid(bid, statusMap, boughtPlayersList):
 	userId = bid['user_id']
@@ -74,4 +84,4 @@ def createLineups(statusMap, weekId):
 			if positionKey in ['QB', 'RB', 'WR']:
 				for player in statusMap[userId][positionKey]:
 					players.append(player)
-		auctionDb.setNewLineup(userId, weekId, statusMap[userId])
+		auctionDb.setNewLineup(userId, weekId, players)
