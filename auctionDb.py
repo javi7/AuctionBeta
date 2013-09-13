@@ -109,7 +109,7 @@ SELECT_LINEUP_PERFORMANCES = 'SELECT p.*, np.player_name, np.player_position FRO
 								'ON l.lineup_id=lp.lineup_id ' +\
 								'AND l.user_id=$userId AND l.week_id=$weekId JOIN t_nfl_players np ON ' +\
 								'np.player_id=lp.player_id LEFT JOIN t_performances p ' +\
-								'ON lp.player_id=p.player_id ORDER BY np.player_position ASC, np.player_id DESC'
+								'ON lp.player_id=p.player_id AND p.week_id=$weekId ORDER BY np.player_position ASC, np.player_id DESC'
 
 SELECT_MATCHUP_TEAM_SCORES = 'SELECT SUM(p.total_pts) AS total_pts, l.user_id FROM t_performances p JOIN t_lineup_players lp ' +\
 								'ON lp.player_id=p.player_id JOIN t_lineups l ON l.lineup_id=lp.lineup_id AND l.week_id=$weekId ' +\
