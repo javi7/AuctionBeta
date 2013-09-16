@@ -7,7 +7,7 @@ function changeKeep(e) {
 		data: {
 			'playerId': keepCell.get('playerId'),
 			'keep': keep,
-			'weekId': 1
+			'weekId': $$('select[name="week"]').get('value')[0]
 		},
 		onSuccess: function(data) {
 			data = JSON.decode(data);
