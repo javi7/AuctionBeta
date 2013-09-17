@@ -11,8 +11,14 @@ def main():
 	for index in range(len(matchups)/2):
 		team1 = matchups[index * 2]
 		team2 = matchups[index * 2 + 1]
-		team1['score'] = scoreMap[team1['user_id']]
-		team2['score'] = scoreMap[team2['user_id']]
+		if team1['user_id'] in scoreMap:
+			team1['score'] = scoreMap[team1['user_id']]
+		else:
+			team1['score'] = 0
+		if team2['user_id'] in scoreMap:
+			team2['score'] = scoreMap[team2['user_id']]
+		else:
+			team2['score'] = 0
 		if team1['score'] > team2['score']:
 			auctionDb.addUserResult(team1['user_id'], 'win', team1['score'])
 			auctionDb.addUserResult(team2['user_id'], 'loss', team2['score'])
