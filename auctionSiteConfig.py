@@ -3,6 +3,7 @@ import web
 import urlHandlers
 import apiHandlers
 import ajaxHandlers
+import fun
 
 urls = (
 	'/', 'urlHandlers.Home',
@@ -18,7 +19,9 @@ urls = (
 	'/ajax/changeaccount', 'ajaxHandlers.ChangeAccount',
 	'/scoreboard', 'urlHandlers.Scoreboard',
 	'/standings', 'urlHandlers.Standings',
-	'/game/([1-9][0-9]*)', 'urlHandlers.Game'
+	'/game/([1-9][0-9]*)', 'urlHandlers.Game',
+	'/thebag', 'fun.theBag',
+    '/badidea', 'fun.badIdea'
 )
 
 app = web.application(urls, globals())

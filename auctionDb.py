@@ -125,8 +125,10 @@ SELECT_GET_ALL_KEEPERS = 'SELECT lp.*, l.user_id, b.bid_amount FROM t_lineup_pla
 SELECT_LINEUP_PLAYER = 'SELECT * FROM t_lineup_players lp JOIN t_lineups l ON lp.lineup_id=l.lineup_id AND l.week_id=$weekId ' +\
 						'WHERE lp.player_id=$playerId'
 
-UPDATE_NFL_PLAYER_WKAL_POINTS = 'UPDATE t_nfl_players SET player_wkal_points = player_wkal_points + $points ' +\
+UPDATE_NFL_PLAYER_WKAL_POINTS = 'UPDATE t_nfl_players SET player_wkal_points = $points ' +\
 								'WHERE player_id=$playerId'
+
+SELECT_NFL_PLAYER_TOTAL_POINTS = 'SELECT SUM(total_pts) AS total_pts FROM t_performances WHERE player_id=$playerId'
 
 UPDATE_ADD_USER_WIN = 'UPDATE t_site_users SET user_wins = user_wins + 1 WHERE user_id=$userId'
 UPDATE_ADD_USER_LOSS = 'UPDATE t_site_users SET user_losses = user_losses + 1 WHERE user_id=$userId'
@@ -375,10 +377,16 @@ def getAllKeepers(weekId):
 	})
 	return keepersResult.list()
 
-def addWkalPoints(playerId, points):
+def setWkalPoints(playerId, points):
 	wkalPointsResult = query(UPDATE_NFL_PLAYER_WKAL_POINTS, {
 		'playerId': playerId, 'points': points
 	})
+
+def getNflPlayerTotalPoints(playerId):
+	totalPointsResult = query(SELECT_NFL_PLAYER_TOTAL_POINTS, {
+		'playerId': playerId
+	})
+	return totalPointsResult[0]['total_pts']
 
 def addUserResult(userId, result, points):
 	if result == 'win':
