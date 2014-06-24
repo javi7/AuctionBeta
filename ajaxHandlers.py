@@ -4,10 +4,7 @@ import json
 
 import auctionDb
 
-approvedEmailList = ['javi.muhrer@gmail.com', 'salaam.ender@gmail.com', 'stjsh09@moravian.edu',
-			'lind@susqu.edu', 'fjlind8@gmail.com', 'sgr50667@huskies.bloomu.edu',
-			'mc735869@wcupa.edu', 'krineran@gmail.com', 'kevin.w.binder@gmail.com',
-			'benjamin.obrien@temple.edu']
+approvedEmailList = []
 
 class Login:
 	def POST(self):
